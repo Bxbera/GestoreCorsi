@@ -5,7 +5,13 @@
 package it.polito.tdp.corsi;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+
+import it.polito.tdp.corsi.model.Corso;
 import it.polito.tdp.corsi.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,10 +53,61 @@ public class FXMLController {
     @FXML
     void corsiPerPeriodo(ActionEvent event) {
     	
+    	String input = txtPeriodo.getText();
+    	int periodo = 0;
+    	// è buona norma avere dei controlli in input, ad esempio se è effettivamente un intero
+    	
+    	try {
+    		periodo = Integer.parseInt(input);
+    	} catch (NumberFormatException nfe) {
+    		txtRisultato.setText("Inserted Value is not a integer");
+    		return;
+    	}
+    	
+    	if(periodo < 1 || periodo > 2) {
+    		txtRisultato.setText("Not inserted 1 or 2");
+    		return; 
+    	}
+    	
+    	List<Corso> result = new ArrayList<>();
+    	result = model.getCorsiByPeriodo(periodo);
+    	
+    	txtRisultato.clear();
+    	txtRisultato.setText("Ho trovato " + result.size() + "corsi. \n");
+    	
+    	for(Corso c: result) {
+    		txtRisultato.appendText("" + c + "\n");
+    	}
     }
 
     @FXML
     void numeroStudenti(ActionEvent event) {
+    	// faccio io
+    	String input = txtPeriodo.getText();
+    	int periodo = 0;
+    	// è buona norma avere dei controlli in input, ad esempio se è effettivamente un intero
+    	
+    	try {
+    		periodo = Integer.parseInt(input);
+    	} catch (NumberFormatException nfe) {
+    		txtRisultato.setText("Inserted Value is not a integer");
+    		return;
+    	}
+    	
+    	if(periodo < 1 || periodo > 2) {
+    		txtRisultato.setText("Not inserted 1 or 2");
+    		return; 
+    	}
+    	
+    	// ho aggiunto solo questa parte alla fine
+    	Map<Corso, Integer> result = new HashMap<>();
+    	result = model.getCorsiIscritti(periodo);
+    	
+    	txtRisultato.clear();
+    	
+    	for(Corso c : result.keySet()) {
+    		txtRisultato.appendText("Al corso: " + c + " risultano iscritti:  " + result.get(c) + " studenti\n");
+    	}
     	
     }
 
