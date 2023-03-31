@@ -12,7 +12,9 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.corsi.model.Corso;
+import it.polito.tdp.corsi.model.Divisione;
 import it.polito.tdp.corsi.model.Model;
+import it.polito.tdp.corsi.model.Studente;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -113,12 +115,35 @@ public class FXMLController {
 
     @FXML
     void stampaDivisione(ActionEvent event) {
-
+    	String codins = this.txtCorso.getText();
+    	if(codins.isEmpty()) {
+    		txtRisultato.setText("Inserire il codice di un corso");
+    		return;
+    	}
+    	
+    	txtRisultato.clear();
+    	for(Divisione d : this.model.getDivisioneStudentiCorso(codins)) {
+    		txtRisultato.appendText(d.getcDS() + " " + d.getnStudenti() + "\n");
+    	}
     }
 
     @FXML
     void stampaStudenti(ActionEvent event) {
-
+    	String codins = this.txtCorso.getText();
+    	if(codins.isEmpty()) {
+    		txtRisultato.setText("Inserire il codice di un corso");
+    		return;
+    	}
+    	
+    	List<Studente> risultato = new ArrayList<Studente>();
+    	risultato = this.model.getIscrittiCorso(codins);
+    	
+    	txtRisultato.clear();
+    	
+    	for(Studente s : risultato) {
+    		txtRisultato.appendText("Al corso: " + codins + " risulta iscritto:  " + s+ "\n");
+    	}
+    	
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
